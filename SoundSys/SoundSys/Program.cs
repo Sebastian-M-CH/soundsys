@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,19 +43,17 @@ namespace SoundSys
         {
             while (n != 0 && n >= 0)
             {
-                Console.WriteLine("Increase the Volumn");
                 SendMessageW(handle, COMMAND_WM, handle,
                     (IntPtr)COMMAND_UP);
                 n--;
             }
         }
 
-        //Lower the Systemsound by N
+        //Decrease the Systemsound by N
         private static void VolumenDown(int n)
         {
             while (n != 0 && n <= 0)
             {
-                Console.WriteLine("Increase the Volumn");
                 SendMessageW(handle, COMMAND_WM, handle,
                     (IntPtr)COMMAND_DOWN);
                 n++;
@@ -79,12 +77,12 @@ namespace SoundSys
                 {
                     if (number > 0)
                     {
-                        Console.WriteLine("Increase the Volumn by" + number);
+                        Console.WriteLine("Increase the volume by" + number);
                         VolumenUp(number);
                     }
                     else
                     {
-                        Console.WriteLine("Lowered the Volumn by" + number);
+                        Console.WriteLine("Lowered the volume by" + number);
                         VolumenDown(number);
                     }
                 }
@@ -99,7 +97,7 @@ namespace SoundSys
         }
 
         private static void writePossibleParameters() {
-            Console.WriteLine("Please use any number from -2,147,483,648 to + 2,147,483,647 to change the volumn.");
+            Console.WriteLine("Please use any number from -2,147,483,648 to + 2,147,483,647 to change the volume.");
             Console.WriteLine("Or use the parameter S to mute/unmute the system.");
         }
     }
