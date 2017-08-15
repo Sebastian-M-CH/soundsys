@@ -26,20 +26,32 @@ namespace SoundSys
         private const int COMMAND_DOWN = 0x90000;
         private const int COMMAND_STATUS = 0x80000;
         private const int COMMAND_WM = 0x319;
+        private static String MEDIA_PLAYER_CONST = "wmplayer";
         private static IntPtr handle = Process.GetCurrentProcess().MainWindowHandle;
 
         [DllImport("user32.dll")]
         public static extern IntPtr SendMessageW(IntPtr handle, int messageType,IntPtr w, IntPtr command);
 
+        //Parameter S
         //Mute or unmute the System
-        private static void ChangeStatus()
+        private static void changeStatus()
         {
             SendMessageW(handle, COMMAND_WM, handle,
                 (IntPtr)COMMAND_STATUS);
+        }  
+        //Parameter E
+        //Kills every Mediaplayer process
+        private static void killMediaPlayer()
+        {
+            Process[] processes = Process.GetProcessesByName(MEDIA_PLAYER_CONST);
+            foreach (Process process in processes){
+                process.Kill();
+            }
         }
 
+        //Parameter n > 0
         //Increase the Systemsound by N
-        private static void VolumenUp(int n)
+        private static void volumenUp(int n)
         {
             while (n != 0 && n >= 0)
             {
@@ -49,8 +61,9 @@ namespace SoundSys
             }
         }
 
+        //Parameter n < 0
         //Decrease the Systemsound by N
-        private static void VolumenDown(int n)
+        private static void volumenDown(int n)
         {
             while (n != 0 && n <= 0)
             {
@@ -78,16 +91,18 @@ namespace SoundSys
                     if (number > 0)
                     {
                         Console.WriteLine("Increase the volume by" + number);
-                        VolumenUp(number);
+                        volumenUp(number);
                     }
                     else
                     {
                         Console.WriteLine("Lowered the volume by" + number);
-                        VolumenDown(number);
+                        volumenDown(number);
                     }
                 }
                 if (parameter.Equals("S"))
-                    ChangeStatus();
+                    changeStatus();
+                if (parameter.Equals("E"))
+                    killMediaPlayer();
             }
             else
             {
@@ -98,7 +113,8 @@ namespace SoundSys
 
         private static void writePossibleParameters() {
             Console.WriteLine("Please use any number from -2,147,483,648 to + 2,147,483,647 to change the volume.");
-            Console.WriteLine("Or use the parameter S to mute/unmute the system.");
+            Console.WriteLine("Use the parameter S to mute/unmute the system.");
+            Console.WriteLine("Or use the parameter E to kill every Mediaplayer process.");
         }
     }
 }
